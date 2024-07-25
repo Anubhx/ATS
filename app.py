@@ -130,7 +130,6 @@ st.text("Boost Your Resume's Visibility with Our Advanced ATS Evaluation Tool!")
 job_description = st.text_area("🔍 Job Description", "Paste the job description here to match with your resume.")
 uploaded_file = st.file_uploader("📄 Upload Your Resume", type="pdf", help="Upload your resume in PDF format for a thorough evaluation.")
 
-
 submit = st.button("Check ATS Score")
 submit1 = st.button("Tell Me About the Resume")
 submit3 = st.button("Percentage Match")
@@ -176,3 +175,50 @@ elif submit3:
             st.download_button(label="Download the PDF", data=file, file_name="ATS_Score_Response.pdf", mime="application/pdf")
     else:
         st.write("Please upload the resume.")
+
+# Add footer with developer details
+import streamlit as st
+
+st.markdown("""
+    <style>
+    .footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+       
+        text-align: center;
+        padding: 10px;
+        font-size: 14px;
+        color: offwhite !important;
+        font-family: 'Poppins', sans-serif;
+    }
+    .footer p {
+        margin: 0;
+        font-size: 20px;
+    }
+    .footer a {
+        text-decoration: none;
+        color: #555;
+        margin: 0 10px;
+    }
+    .footer a:hover {
+        color: white;
+    }
+    .footer .social-icons {
+        font-size: 24px; /* Increase icon size for better visibility */
+    }
+    .footer .social-icons i {
+        margin: 0 10px; /* Add spacing between icons */
+    }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <div class="footer">
+        <p>Developed by Anubhav Raj</p>
+        <p class="social-icons">
+            <a href="https://github.com/Anubhx" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="https://linkedin.com/in/anubhax/" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="mailto:anubhav0427@gmail.com"><i class="fas fa-envelope"></i></a>
+        </p>
+    </div>
+""", unsafe_allow_html=True)

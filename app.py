@@ -123,16 +123,83 @@ Data:
 Resume: {resume_text}
 Job Description: {job_description}
 """
+input_prompt4_template = """ Improve the provided resume by incorporating strong action verbs to enhance the 
+impact of each bullet point and section. Ensure that each experience and skill statement starts with 
+a dynamic action verb to convey a sense of accomplishment and proactivity. Additionally, if a resume
+ summary is not present, create a concise and compelling resume summary that effectively highlights the candidate's key 
+ qualifications, experiences(if any), and career goals. Use the information
+ from the existing resume to craft this summary, ensuring it aligns with the overall tone and content of the resume. """
 
 ## Streamlit app
-st.title("🚀 Smart ATS Analyzer")
-st.text("Boost Your Resume's Visibility with Our Advanced ATS Evaluation Tool!")
+st.markdown("""
+<style>
+body {
+    font-family: 'Arial', sans-serif;
+}
+.header {
+    font-size: 50px;
+    font-weight: bold;
+}            
+.custom-container {
+
+    padding: 5px;
+    border-radius: 5px;
+}
+.div.sttext_area {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 5px;
+}                 
+</style>
+<div class="header">🚀 Smart ATS Analyzer</div>
+ <div class="custom-container">
+    <p>Boost Your Resume's Visibility with Our Advanced ATS Evaluation Tool!</p>
+</div>          
+""", unsafe_allow_html=True)
+# st.text("Boost Your Resume's Visibility with Our Advanced ATS Evaluation Tool!")
 job_description = st.text_area("🔍 Job Description", "Paste the job description here to match with your resume.")
 uploaded_file = st.file_uploader("📄 Upload Your Resume", type="pdf", help="Upload your resume in PDF format for a thorough evaluation.")
 
-submit = st.button("Check ATS Score")
-submit1 = st.button("Tell Me About the Resume")
-submit3 = st.button("Percentage Match")
+
+col1, col2, col3, col4 = st.columns(4)
+st.markdown("""
+<style>
+ body {
+    font-family: 'Arial', sans-serif;
+}           
+div.stButton > button:first-child {
+    background-color: #000; /* Black background */
+    color: #fff; /* White text */
+    border: 1px solid #000; /* Black border */
+    border-radius: 4px;
+    padding: 12px 40px;
+    font-size: 13px;
+    font-weight: 300;
+    box-shadow: #fff 4px 4px 0 0, #000 4px 4px 0 1px;
+}
+div.stButton > button:hover {
+    background-color: #444; /* Darker grey */
+    color: #fff;
+}
+div.stButton > button:active {
+    box-shadow: rgba(0, 0, 0, .125) 0 3px 5px inset;
+    transform: translate(2px, 2px);
+}
+div.stButton > button:focus {
+    outline: none;
+}
+</style>
+""", unsafe_allow_html=True)
+
+with col1:
+
+    submit = st.button("Check ATS Score")
+with col2:
+    submit1 = st.button("About the Resume")
+with col3:
+    submit3 = st.button("Percentage Match")
+with col4:
+    submit4 = st.button("Improve the Resume")
 
 if submit:
     if uploaded_file is not None:
@@ -173,8 +240,23 @@ elif submit3:
         st.success("The response has been saved as a PDF.")
         with open("ATS_Score_Response.pdf", "rb") as file:
             st.download_button(label="Download the PDF", data=file, file_name="ATS_Score_Response.pdf", mime="application/pdf")
+    
     else:
         st.write("Please upload the resume.")
+
+elif submit4:
+    if uploaded_file is not None:
+        resume_text = input_pdf_text(uploaded_file)
+        input_prompt4 = input_prompt4_template.format(resume_text=resume_text, job_description=job_description)
+        response = get_gemini_response(input_prompt4)
+        st.subheader("The Response is")
+        st.write(response)
+        save_response_as_pdf(response, "Imoroved_Resume_Response.pdf")
+        st.success("The response has been saved as a PDF.")
+        with open("Imoroved_Resume_Response.pdf", "rb") as file:
+            st.download_button(label="Download the PDF", data=file, file_name="Imoroved_Resume_Response.pdf", mime="application/pdf")   
+    else:
+        st.write("Please upload the resume.")             
 
 # Add footer with developer details
 import streamlit as st
